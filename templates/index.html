@@ -6,13 +6,38 @@
     <div class="container">
       
       <div class="section-content">
-        <h2>Discover places near you.</h2>
-        <a href="#" class="btn-primary">Sign up</a>
-        <a href="#" class="btn-secondary">Learn more</a> 
+        <h2>Discover OpenAlex</h2>      
+        <a href="{{ url_for('index') }}" class="btn-primary">Sign up</a>
+        <a href="{{ url_for('about') }}" class="btn-secondary">Learn more</a> 
+
+
+        <ul>
+          <li>
+            issn: "{{ data['issn'] }}"
+            <a href="#" class="btn-primary">Sign up</a>
+            <a href="{{ url_for('about') }}" class="btn-secondary">Learn more</a> 
+          </li>
+          {% for item in data['counts_by_year'] %}
+            <li>
+              <ul>
+                <li>
+                  year: {{ item['year'] }}
+                </li>
+                <li>
+                  works_count: {{ item['works_count'] }}
+                </li>
+                <li>
+                  cited_by_count: {{ item['cited_by_count'] }}
+                </li>                
+              </ul>              
+            </li>
+          {% endfor %}          
+        </ul>
       </div>
 
+
       <div class="section-device">
-        <img src="static/img/device.png">
+        <img src="static/img/openalex.png">
       </div>
       
       <div class="clearfix"></div>
