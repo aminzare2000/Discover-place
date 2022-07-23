@@ -37,3 +37,5 @@ venv/*
 
 __pycache__/
 __pycache__/*
+static/css/bootstrap/bootstrap-icons-1.7.0/
+static/css/bootstrap/bootstrap-icons-1.7.0/*

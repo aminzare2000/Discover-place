@@ -14,7 +14,7 @@ class TestOpenAlex(TestCase):
         oa = OpenAlex()
         
         work = oa.get_single_work("W2741809807")
-        print(work.dict())
+        print(work.dict())        
         if not isinstance(work, Work):
             self.fail()
 

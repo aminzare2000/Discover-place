@@ -1,21 +1,29 @@
 from logging import raiseExceptions
 from diophila import *
 
+
 class OpenAlexTools:
 
     def __init__(self):
         self.openalex = OpenAlex()
         # https://api.openalex.org/venues?filter=works_count:%3E1000
-        self.baseVenue = "https://api.openalex.org/venues" 
-    
+        self.baseVenue = "https://api.openalex.org/venues"
+
     def get_venues(self, issn=None):
         if issn is None:
             raiseExceptions(Exception("issn is required"))
         else:
-            issn = {"issn" : issn}
+            issn = {"issn": issn}
         pages = [1, 2, 3]
         # url = self.baseVenue + issn
-        return self.openalex.get_list_of_venues(filters=issn, pages=pages)
+        venues = self.openalex.get_list_of_venues(filters=issn, pages=pages)
+        return venues
+
+
+    def get_works(self, url_id, year):
+        works_api_url = "https://api.openalex.org/works?filter=host_venue.id:"+url_id+",publication_year:"+str(year)
+        pages_of_works = self.openalex.get_works_by_api_url(works_api_url)
+        return pages_of_works 
 
 
 # works_api_url = "https://api.openalex.org/works?filter=author.id:A1969205032"
@@ -24,7 +32,6 @@ class OpenAlexTools:
 # for page in pages_of_works:
 #     for work in page['results']:
 #         print(work['display_name'])
-
 
 
 # # if no `pages` parameter is supplied, we use cursor paging

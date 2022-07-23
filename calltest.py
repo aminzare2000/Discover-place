@@ -1,10 +1,19 @@
 from OpenAlexTools import OpenAlexTools
 from json import *
 
+oaTools = OpenAlexTools()
+
 def get_journal_by_issn(issn):
-    oaTools = OpenAlexTools()
+    
     # 0029-3970
-    pages_of_venues = oaTools.get_venues('2167-8359') 
+    venues = oaTools.get_venues('1611-3349') 
+    for page in venues:
+        # for meta in page['meta']:            
+        for work in page['results']:
+            work['id'] = work['id'].split('/')[-1]
+            return work;
+    
+
     for page in pages_of_venues:
         for work in page['results']:
             return work
@@ -30,6 +39,15 @@ def get_journal_by_issn(issn):
                 print(item['year'])
                 print(item['works_count'])
                 print(item['cited_by_count'])
+
+def get_works(url_id,year):
+    pages_of_works = oaTools.get_works(url_id,year)
+    # for page in pages_of_works:
+    #     for work in page['results']:
+    #         print(work['display_name'])
+
+
+
 
         
         
