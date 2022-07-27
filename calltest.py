@@ -6,17 +6,14 @@ oaTools = OpenAlexTools()
 def get_journal_by_issn(issn):
     
     # 0029-3970
-    venues = oaTools.get_venues('1611-3349') 
-    for page in venues:
-        # for meta in page['meta']:            
-        for work in page['results']:
-            work['id'] = work['id'].split('/')[-1]
-            return work;
+    venues = oaTools.get_venues(issn) 
+    return venues
+
     
 
-    for page in pages_of_venues:
-        for work in page['results']:
-            return work
+    # for page in pages_of_venues:
+    #     for work in page['results']:
+    #         return work
             # display_name: "PeerJ",
             # publisher: "PeerJ",
             # works_count: 21100,
@@ -34,17 +31,16 @@ def get_journal_by_issn(issn):
             # print(work['homepage_url'])
             # print(work['created_date']) # date of creation
             
-            counts_by_year_list = work['counts_by_year']
-            for item in counts_by_year_list:
-                print(item['year'])
-                print(item['works_count'])
-                print(item['cited_by_count'])
+            # counts_by_year_list = work['counts_by_year']
+            # for item in counts_by_year_list:
+            #     print(item['year'])
+            #     print(item['works_count'])
+            #     print(item['cited_by_count'])
 
-def get_works(url_id,year):
-    pages_of_works = oaTools.get_works(url_id,year)
-    # for page in pages_of_works:
-    #     for work in page['results']:
-    #         print(work['display_name'])
+def get_works(url_id,year , page=None):
+    pages_of_works = oaTools.get_works(url_id,year,page)
+    return pages_of_works
+
 
 
 

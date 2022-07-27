@@ -6,13 +6,147 @@
 
 
     <div class="content">
-      <div class="mt-4 mb-5 p-5 bg-primary text-white rounded">
 
-        <p>
-          work work
-        </p>
+      {% for work in works %}
+
+      <button class="accordion mt-2">
+        <b>Title</b>: {{ work['work']['title'] }}<br>
+        <b>Type</b>: {{ work['work']['type'] }}&nbsp;&nbsp;
+        <b>Biblio</b>: {{ work['work']['biblio'] }}&nbsp;&nbsp;
+        <b>open_access</b>: {{ work['work']['open_access'] }}&nbsp;&nbsp;
+        <b>is_retracted</b>: {{ work['work']['is_retracted'] }}&nbsp;&nbsp;
+        <b>is_paratext</b>: {{ work['work']['is_paratext'] }}&nbsp;&nbsp;
+      </button>
+      <div class="panel">
+
+        <!--Begin: Abstract -->
+        <nav class="navbar navbar-light bg-light">
+          <span class="navbar-brand mb-0 h1">Abstract</span>
+        </nav>
+        <div class=" p-2 rounded border border-primary">
+          <p>{{ work['abstract'] }}</p>
+        </div>
+        <!--End: Abstract -->
+
+        <!--Begin: Authorships -->
+        <nav class="navbar navbar-light bg-light mt-2">
+          <span class="navbar-brand mb-0 h1">Authorships</span>
+        </nav>
+        <div class=" p-2 rounded border border-primary">
+          {% for authorship in work['work']['authorships'] %}
+
+              <b>raw_affiliation_string </b>: <span class="string">{{ authorship['raw_affiliation_string'] }}</span><br>
+              <b>author_position</b>: {{ authorship['author_position'] }}<br>
+              <b>display_name</b> {{ authorship['author']['display_name'] }} <br>
+              id: <a href="{{ authorship['author']['id'] }}"> {{ authorship['author']['id'] }} </a> , orcid: {{ authorship['author']['orcid'] }}<br>
+
+              {% if authorship['institutions']|length > 0  %}
+                <button class="accordion mt-2" >
+                  institutions
+                </button>
+
+                <div class="panel">
+                  {% for institute in authorship['institutions']  %}
+                  <ul class="list-group mb-4 rounded border">
+                    <li class="list-group-item">
+                      <ul>
+                        <li>
+                          <b>display_name</b>: {{ institute['display_name'] }}
+                        </li>
+                        <li>
+                          <b>country_code</b>: {{ institute['country_code'] }}
+                        </li>
+                        <li>
+                          <b>type</b>: {{ institute['type'] }}
+                        </li>                                                
+                        <li>
+                          <b>id</b>: <a href="{{ institute['id'] }}"> {{ institute['id'] }} </a>
+                        </li>
+                        <li>
+                          <b>ror</b>:  <a href="{{ institute['ror'] }}"> {{ institute['ror'] }} </a>
+                        </li>                        
+                      </ul>
+                    </li>
+                  </ul>                  
+                  {% endfor %} <!-- End: for institute loop -->
+                </div>
+              {% endif %} <!-- End: if authorship['institutions']|length -->
+
+
+              <hr>
+
+          {% endfor %} <!-- End: for authorship loop -->
+        </div>
+        <!--End: Authorships -->
+
+        <!--Begin: referenced_works -->
+        {% if work['work']['referenced_works']|length > 0  %}
+          <nav class="navbar navbar-light bg-light mt-2">
+            <span class="navbar-brand mb-0 h1">referenced_works ( {{ work['work']['referenced_works']|length }})</span>
+          </nav>
+          <div class=" p-2 rounded border border-primary">
+            {% for referenced_work in work['work']['referenced_works'] %}
+            <a href="{{ referenced_work }}">  {{ referenced_work }}</a><br>
+            {% endfor %} <!-- End: for referenced_work loop -->
+          </div>
+        {% endif %} <!-- End: if work['work']['referenced_works']|length -->
+        <!--End: referenced_works -->
+
+        <!--Begin: related_works -->
+        {% if work['work']['related_works']|length > 0  %}
+          <nav class="navbar navbar-light bg-light mt-2">
+            <span class="navbar-brand mb-0 h1">related_works ( {{ work['work']['related_works']|length }})</span>
+          </nav>
+          <div class=" p-2 rounded border border-primary">
+            {% for related_work in work['work']['related_works'] %}
+            <a href="{{ related_work }}">  {{ related_work }}</a><br>
+            {% endfor %} <!-- End: for related_work loop -->
+          </div>
+        {% endif %} <!-- End: if work['work']['related_works']|length -->
+        <!--End: related_works -->        
+        
+
+
+      </div> <!-- End: panel -->
+      
+
+
+
+      <!-- Begin: Work ids -->
+      <ul class="list-group mb-4 rounded border border-info">
+        <li class="list-group-item">
+          <ul>
+            <li>
+              openalex: <a href="{{ work['work']['ids']['openalex'] }}"> {{ work['work']['ids']['openalex'] }} </a>
+            </li>
+            <li>
+              doi: <a href=" {{ work['work']['ids']['doi'] }}"> {{ work['work']['ids']['doi'] }} </a>
+            </li>
+            <li>
+              pmid: <a href="{{ work['work']['ids']['pmid'] }}"> {{ work['work']['ids']['pmid'] }} </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <!-- End: Work ids -->
+
+
+      {% endfor %}  <!-- End: for work loop -->
+
+      <div aria-label="mt-4 mb-5">
+        <ul class="pagination">
+
+          {% for pp in pages %}
+
+          {% if (pp % 20 == 0) %} <br>{% endif %}
+          <li class="page-item">
+            <a class="page-link" href={{ url_for('work' , url_id=url_id , year=year , page=pp) }}> {{pp}}</a>
+          </li>
+
+
+          {% endfor %}
+        </ul>
       </div>
-
 
 
 
@@ -24,7 +158,8 @@
 
 
 
-    <div class="clearfix"></div>
+    <div class=" clearfix">
+    </div>
 
   </div>
 </main>

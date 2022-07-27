@@ -3,11 +3,22 @@ from calltest import *
 
 app = Flask(__name__)
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET' , 'POST'])
+@app.route('/index', methods=['GET' , 'POST'])
 def index():
-    data = get_journal_by_issn('0029-3970')
-    return render_template('index.html', data = data)
+    # 1611-3349
+    # 0029-3970
+
+
+    if request.method == 'GET':
+        venues = get_journal_by_issn('1611-3349')
+        return render_template('index.html', venues = venues)
+    else:
+        issn = request.form['issn']
+        venues = get_journal_by_issn(issn)
+        return render_template('index.html', venues = venues)
+
+
 
 # @app.route('/work/<url_id>/', methods=['GET'])
 # def work(url_id = None):
@@ -17,10 +28,14 @@ def index():
 #     return render_template('wqork.html')
 
 @app.route('/work/<url_id>/<int:year>', methods=['GET'])
-def work(url_id, year):
+@app.route('/work/<url_id>/<int:year>/<int:page>', methods=['GET'])
+def work(url_id, year , page = None):
     # https://api.openalex.org/works?filter=institutions.country_code:fr|host_venue.issn:0957-1558
-    data = get_works(url_id, year)
-    return render_template('work.html')
+    works_pi , pages = get_works(url_id, year,page)
+    return render_template('work.html', works = works_pi,        
+                                        pages=pages , 
+                                        year=year , 
+                                        url_id=url_id)
 
 @app.route('/about')
 def about():

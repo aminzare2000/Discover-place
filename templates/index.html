@@ -5,37 +5,51 @@
 <main>
   <div class="container">
 
+    <form method="post">
+      <p>Enter ISSN:</p>
+      <p><input type="text" name="issn" /></p>
+      <p><input type="submit" value="submit" /></p>
+    </form>
 
     <div class="content">
 
       <!-- https://api.openalex.org/venues?filter=display_name.search:Neurology -->
-      <div class="mt-4 mb-5 p-5 bg-primary text-white rounded">
-        <h1>{{ data['display_name']}}</h1>
+      {% for venue in venues %}
+
+      <div class="mt-4 mb-5 p-5 bg-secondary text-white rounded">
+        <h1>{{ venue['display_name']}}</h1>
         <p>
-          issn: {{ data['issn'] }} &nbsp;&nbsp; publisher: {{ data['publisher'] }} &nbsp;&nbsp; 
-          works_count: {{ data['works_count'] }} &nbsp;&nbsp; cited_by_count: {{ data['cited_by_count'] }} &nbsp;&nbsp; 
-          is_oa: {{ data['is_oa'] }} &nbsp;&nbsp; is_in_doaj: {{ data['is_in_doaj'] }} &nbsp;&nbsp; 
-          created_date: {{ data['created_date'] }} &nbsp;&nbsp; <br> homepage_url:&nbsp;<a href="{{data['homepage_url']}}"  target="_blank" style="color:white ;">{{ data['homepage_url'] }} </a>  &nbsp;&nbsp; 
+          issn: {{ venue['issn'] }} &nbsp;&nbsp; publisher: {{ venue['publisher'] }} &nbsp;&nbsp;
+          works_count: {{ venue['works_count'] }} &nbsp;&nbsp; cited_by_count: {{ venue['cited_by_count'] }}
+          &nbsp;&nbsp;
+          is_oa: {{ venue['is_oa'] }} &nbsp;&nbsp; is_in_doaj: {{ venue['is_in_doaj'] }} &nbsp;&nbsp;
+          created_date: {{ venue['created_date'] }} &nbsp;&nbsp; <br> homepage_url:&nbsp;<a
+            href="{{venue['homepage_url']}}" target="_blank" style="color:white ;">{{ venue['homepage_url'] }} </a>
+          &nbsp;&nbsp;
         </p>
       </div>
 
       <ul class="list-group">
-        {% for item in data['counts_by_year'] %}
-          <li class="list-group-item">
-            <ul>
-              <li>
-                year: <a href={{ url_for('work' , url_id =data['id'], year= item['year']  ) }}> {{ item['year'] }} </a>
-              </li>
-              <li>
-                works_count: {{ item['works_count'] }}
-              </li>
-              <li>
-                cited_by_count: {{ item['cited_by_count'] }}
-              </li>
-            </ul>
-          </li>
+        {% for item in venue['counts_by_year'] %}
+        <li class="list-group-item">
+          <ul>
+            <li>
+              year: <a href={{ url_for('work' , url_id=venue['id'], year=item['year'] ) }}> {{ item['year'] }} </a>
+            </li>
+            <li>
+              works_count: {{ item['works_count'] }}
+            </li>
+            <li>
+              cited_by_count: {{ item['cited_by_count'] }}
+            </li>
+          </ul>
+        </li>
         {% endfor %}
       </ul>
+
+      {% endfor %}
+
+
 
 
 
